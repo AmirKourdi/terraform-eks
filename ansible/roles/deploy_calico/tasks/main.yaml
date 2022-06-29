@@ -1,0 +1,16 @@
+---
+- name: Add helm repo projectcalico
+  kubernetes.core.helm_repository:
+    name: projectcalico
+    repo_url: "{{ chart_url }}"
+
+- name: Install Calico Chart
+  kubernetes.core.helm:
+    chart_ref: projectcalico/tigera-operator
+    chart_version: "{{ chart_version }}"
+    release_namespace: tigera-operator
+    name: calico
+    create_namespace : yes
+    update_repo_cache: yes
+    replace: yes
+

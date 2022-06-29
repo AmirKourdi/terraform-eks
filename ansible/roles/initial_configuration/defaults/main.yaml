@@ -1,0 +1,4 @@
+---
+python_requirements: "roles/initial_configuration/files/python-requirements.yaml"
+ansible_requirements: "roles/initial_configuration/files/ansible-requirements.yaml"
+helm_diff_url: "https://github.com/databus23/helm-diff"

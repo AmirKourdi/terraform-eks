@@ -1,0 +1,34 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  vars:
+     helm_chart_url: "https://docs.projectcalico.org/charts"	 
+     helm_diff_url: "https://github.com/databus23/helm-diff"
+  tasks:
+  - name: Install helm_diff plugin
+    kubernetes.core.helm_plugin:
+      plugin_path: "{{ helm_diff_url }}"
+      state: present
+  - name: Add helm repo projectcalico
+    kubernetes.core.helm_repository:
+      name: projectcalico
+      repo_url: "{{ helm_chart_url }}"
+  - name: Update Repo
+    kubernetes.core.helm:
+      name: dummy
+      namespace: kube-system
+      state: absent
+      update_repo_cache: true 
+  - name: Create tigera-operator namespace 
+    kubernetes.core.k8s:
+      name: tigera-operator
+      api_version: v1
+      kind: Namespace
+      state: present    
+    ignore_errors: true 
+  - name: Install Calico Chart
+    kubernetes.core.helm:
+      name: calico
+      namespace: tigera-operator
+      chart_ref: projectcalico/tigera-operator

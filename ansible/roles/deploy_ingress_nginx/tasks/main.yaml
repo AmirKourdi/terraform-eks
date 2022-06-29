@@ -1,0 +1,17 @@
+---
+- name: Add helm repo ingress_nginx
+  kubernetes.core.helm_repository:
+    name: ingress-nginx
+    repo_url: "{{ chart_url }}"
+
+- name: Install nginx Chart
+  kubernetes.core.helm:
+     chart_ref: ingress-nginx/ingress-nginx
+     chart_version: "{{ chart_version }}"
+     name: ingress-nginx
+     release_namespace: ingress-nginx
+     replace: yes
+     create_namespace : yes
+     update_repo_cache: yes
+     values_files:
+       - "{{ valuesfile_path }}"

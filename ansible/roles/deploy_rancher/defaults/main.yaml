@@ -1,0 +1,8 @@
+---
+chart_url: 'https://releases.rancher.com/server-charts/latest'
+chart_version: '2.6.5'
+rancher_ssl_tls_key: "{{ lookup('file', '../files/srt-apps.key') }}"
+rancher_ssl_tls_crt: "{{ lookup('file', '../files/srt-apps.crt') }}"
+rancher_hostname: 'rancher-eks.srt-apps.tlv-lab.f5net.com'
+
+

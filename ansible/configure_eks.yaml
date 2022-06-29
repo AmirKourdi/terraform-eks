@@ -1,0 +1,15 @@
+---
+- name: Configure EKS
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  roles:
+    - role: initial_configuration
+      tags: role-initial-configuration
+    - role: deploy_calico
+      tags: role-deploy-calico
+    - role: deploy_ingress_nginx
+      tags: role-deploy-ingress-nginx
+    - role: deploy_rancher
+      tags: role-deploy-rancher
+

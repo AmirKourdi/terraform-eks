@@ -1,0 +1,4 @@
+---
+helm_chart_ingress_nginx_url: 'https://kubernetes.github.io/ingress-nginx'
+chart_version: '4.1.4'
+valuesfile_path: 'roles/deploy_ingress_nginx/files/values.yaml'

@@ -1,0 +1,13 @@
+---
+
+- name: Install specified python requirements
+  pip:
+    requirements: "{{ playbook_dir }}/{{ python_requirements }}"
+
+- name: Install specified ansible requirements
+  shell: ansible-galaxy install -r "{{ playbook_dir }}/{{ ansible_requirements }}"
+
+- name: Install helm_diff plugin
+  kubernetes.core.helm_plugin:
+    plugin_path: "{{ helm_diff_url }}"
+    state: present

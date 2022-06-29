@@ -1,0 +1,42 @@
+---
+- name: Add helm repo rancher
+  kubernetes.core.helm_repository:
+    name: rancher
+    repo_url: "{{ chart_url }}"
+
+- name: Create a cattle-system namespace
+  kubernetes.core.k8s:
+    name: cattle-system
+    api_version: v1
+    kind: Namespace
+    state: present
+
+
+- name: Create Rancher Secret Using TLS
+  kubernetes.core.k8s:
+    state: patched
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: "tls-rancher-ingress"
+        namespace: cattle-system
+      type: kubernetes.io/tls
+      data:
+        tls.crt: "{{ rancher_ssl_tls_crt  }} | base64 "
+        tls.key: "{{ rancher_ssl_tls_key }}  | base64 "
+
+- name: Install Rancher Chart
+  kubernetes.core.helm:
+    chart_ref: 'rancher-latest/rancher'
+    chart_version: "{{ chart_version }}"
+    release_name: 'rancher'
+    release_namespace: cattle-system
+    update_repo_cache: yes
+    replace: yes
+    release_values:
+      hostname: "{{ rancher_hostname }}"
+      replicas: 1
+      ingress:
+        tls:
+          source: secret
